@@ -1,3 +1,6 @@
+use nom::IResult;
+use attribute_info::*;
+
 pub struct AttributeInfo {
     pub attribute_name_index: u16,
     pub attribute_length: u32,
@@ -29,4 +32,27 @@ pub struct ExceptionsAttribute {
 
 pub struct ConstantValueAttribute {
     pub constant_value_index: u16,
+}
+
+impl AttributeInfo {
+    pub fn try_as_code_attribute(&self) -> Option<CodeAttribute> {
+        match code_attribute_parser(&self.info) {
+            IResult::Done(_, c) => Some(c),
+            _ => None,
+        }
+    }
+
+    pub fn try_as_exceptions_attribute(&self) -> Option<ExceptionsAttribute> {
+        match exceptions_attribute_parser(&self.info) {
+            IResult::Done(_, c) => Some(c),
+            _ => None,
+        }
+    }
+
+    pub fn try_as_constant_value_attribute(&self) -> Option<ConstantValueAttribute> {
+        match constant_value_attribute_parser(&self.info) {
+            IResult::Done(_, c) => Some(c),
+            _ => None,
+        }
+    }
 }
