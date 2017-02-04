@@ -18,6 +18,13 @@ pub mod parser;
 pub use parser::class_parser;
 pub use types::ClassFile;
 
+pub fn class_parser_option(input: &[u8]) -> Option<ClassFile> {
+    match class_parser(input) {
+        IResult::Done(_, c) => Some(c),
+        _ => None,
+    }
+}
+
 pub fn parse_class(class_name: &str) -> Result<ClassFile, String> {
     let class_file_name = &format!("{}.class", class_name);
     let path = Path::new(class_file_name);
