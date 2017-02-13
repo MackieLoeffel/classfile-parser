@@ -19,7 +19,7 @@ pub mod types;
 pub mod parser;
 
 pub use parser::class_parser;
-pub use types::ClassFile;
+pub use types::*;
 
 pub fn class_parser_option(input: &[u8]) -> Option<ClassFile> {
     match class_parser(input) {
